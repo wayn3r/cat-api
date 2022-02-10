@@ -13,7 +13,8 @@ class CreateBreedTable extends Migration
      */
     public function up()
     {
-        Schema::create('breed', function (Blueprint $table) {
+        $this->down();
+        Schema::create('breeds', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
@@ -27,6 +28,6 @@ class CreateBreedTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('breed');
+        Schema::dropIfExists('breeds');
     }
 }

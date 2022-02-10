@@ -1,19 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Breed\BreedDeleteController;
+use App\Http\Controllers\Breed\BreedGetController;
+use App\Http\Controllers\Breed\BreedPostController;
+use App\Http\Controllers\Breed\BreedPutController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/breed', BreedPostController::class.'@__invoke');
+Route::get('/breed', BreedGetController::class.'@__invoke');
+Route::put('/breed/{id}', BreedPutController::class.'@__invoke');
+Route::delete('/breed/{id}', BreedDeleteController::class.'@__invoke');

@@ -13,14 +13,15 @@ class CreateCatTable extends Migration
      */
     public function up()
     {
-        Schema::create('cat', function (Blueprint $table) {
+        $this->down();
+        Schema::create('cats', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->foreignId('breedId');
             $table->string('description');
             $table->string('latitude');
             $table->string('longitude');
-            $table->foreign('breedId')->references('id')->on('breed');
+            $table->foreign('breedId')->references('id')->on('breeds');
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class CreateCatTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cat');
+        Schema::dropIfExists('cats');
     }
 }
