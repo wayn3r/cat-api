@@ -3,8 +3,12 @@
 namespace CatApp\Cat\Application\Save;
 
 use CatApp\Cat\Domain\Cat;
+use CatApp\Cat\Domain\CatDescription;
+use CatApp\Cat\Domain\CatLatitude;
+use CatApp\Cat\Domain\CatLongitude;
 use CatApp\Cat\Domain\CatName;
 use CatApp\Cat\Domain\CatRepository;
+use CatApp\Shared\Domain\BreedId;
 
 class CatCreator {
 
@@ -14,8 +18,14 @@ class CatCreator {
         $this->repository = $repository;
     }
 
-    public function __invoke(CatName $name): Cat {
-        $cat = new Cat(null, $name);
+    public function __invoke(
+        CatName $name, 
+        BreedId $breedId, 
+        CatDescription $description, 
+        CatLongitude $longitude,
+        CatLatitude $latitude
+    ): Cat {
+        $cat = new Cat(null, $name, $breedId, $description, $longitude, $latitude);
         return $this->repository->record($cat);
     }
 }

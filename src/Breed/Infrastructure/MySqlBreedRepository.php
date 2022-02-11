@@ -4,9 +4,9 @@ namespace CatApp\Breed\Infrastructure;
 
 use App\Models\Breed as ModelsBreed;
 use CatApp\Breed\Domain\Breed;
-use CatApp\Breed\Domain\BreedId;
 use CatApp\Breed\Domain\BreedName;
 use CatApp\Breed\Domain\BreedRepository;
+use CatApp\Shared\Domain\BreedId;
 
 class MySqlBreedRepository implements BreedRepository {
 
@@ -29,6 +29,11 @@ class MySqlBreedRepository implements BreedRepository {
 
     public function findById(BreedId $id): ?Breed {
         $model = ModelsBreed::find($id->value());
+
+        if($model === null){
+            return null;
+        }
+
         return Breed::fromPrimitive($model->toArray());
     }
     

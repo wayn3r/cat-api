@@ -3,7 +3,7 @@
 namespace CatApp\Breed\Application\Remove;
 
 use CatApp\Breed\Domain\Breed;
-use CatApp\Breed\Domain\BreedId;
+use CatApp\Shared\Domain\BreedId;
 
 class RemoveBreedCommandHandler {
     private BreedRemover $remover;

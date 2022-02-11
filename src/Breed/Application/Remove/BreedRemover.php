@@ -4,7 +4,7 @@ namespace CatApp\Breed\Application\Remove;
 
 use CatApp\Breed\Application\Find\BreedFinder;
 use CatApp\Breed\Domain\Breed;
-use CatApp\Breed\Domain\BreedId;
+use CatApp\Shared\Domain\BreedId;
 use CatApp\Breed\Domain\BreedRepository;
 
 class BreedRemover {

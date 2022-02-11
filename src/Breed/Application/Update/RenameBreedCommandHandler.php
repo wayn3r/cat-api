@@ -3,8 +3,8 @@
 namespace CatApp\Breed\Application\Update;
 
 use CatApp\Breed\Domain\Breed;
-use CatApp\Breed\Domain\BreedId;
 use CatApp\Breed\Domain\BreedName;
+use CatApp\Shared\Domain\BreedId;
 
 class RenameBreedCommandHandler {
     private BreedRenamer $renamer;

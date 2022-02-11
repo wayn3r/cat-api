@@ -2,6 +2,7 @@
 
 namespace CatApp\Breed\Domain;
 
+use CatApp\Shared\Domain\BreedId;
 use DomainException;
 
 class BreedNotExist extends DomainException {
@@ -9,8 +10,9 @@ class BreedNotExist extends DomainException {
     public function __construct(BreedId $id){
         $this->id = $id;
         parent::__construct();
+        $this->message = $this->errorMessage();
     }
-    protected function errorMessage(): string {
-        return sprintf('The breed <%s> does not exist', $this->id->value());
+    public function errorMessage(): string {
+        return sprintf('The breed %s does not exist', $this->id->value());
     }
 }
