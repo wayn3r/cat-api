@@ -3,6 +3,7 @@
 namespace CatApp\Breed\Domain;
 
 use CatApp\Shared\Domain\AggregateRoot;
+use CatApp\Shared\Domain\BreedId;
 
 class Breed extends AggregateRoot {
     private ?BreedId $id;

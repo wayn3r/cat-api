@@ -36,7 +36,7 @@ class MySqlBreedRepository implements BreedRepository {
         $breedName = $name->value();
         $breeds = ModelsBreed::where('name','like',"%$breedName%")
             ->limit(100)
-            ->get(['id','name'])
+            ->get()
             ->map(
                 fn(ModelsBreed $breed) => Breed::fromPrimitive($breed->toArray())
             );
