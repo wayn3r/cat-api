@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Cat;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cat\PutRequest;
 use CatApp\Cat\Application\Update\CatUpdater;
 use CatApp\Cat\Application\Update\UpdateCatCommand;
 use CatApp\Cat\Application\Update\UpdateCatCommandHandler;
 use CatApp\Cat\Infrastructure\MySqlCatRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class CatPutController extends Controller{
 
-    public function __invoke(Request $request): JsonResponse {
+    public function __invoke(PutRequest $request): JsonResponse {
 
         $command = new UpdateCatCommand($request->id, $request->name);
         $repository = new MySqlCatRepository();

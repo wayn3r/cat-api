@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use App\Http\Controllers\ValidationError;
 use CatApp\Breed\Domain\BreedNotExist;
+use CatApp\Cat\Domain\CatNotExist;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -43,12 +43,16 @@ class Handler extends ExceptionHandler
     }
 
     public function render($request, Throwable $e){
-        if($e instanceof BreedNotExist){
-            return new JsonResponse(['error' => $e->getMessage()], 404);
+        $exceptiions = [
+            BreedNotExist::class => 404,
+            CatNotExist::class => 404
+        ];
+        $status = @$exceptiions[get_class($e)];
+
+        if($status === null){
+            return parent::render($request, $e);
         }
-        if($e instanceof ValidationError){
-            return new JsonResponse(['error' => $e->errors()], 404);
-        }
-        return parent::render($request, $e);
+        
+        return new JsonResponse(['error' => $e->getMessage()], $status);
     }
 }

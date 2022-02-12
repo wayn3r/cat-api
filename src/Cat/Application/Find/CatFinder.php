@@ -4,7 +4,6 @@ namespace CatApp\Cat\Application\Find;
 
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatId;
-use CatApp\Cat\Domain\CatName;
 use CatApp\Cat\Domain\CatNotExist;
 use CatApp\Cat\Domain\CatRepository;
 
@@ -23,9 +22,7 @@ class CatFinder {
         }
         return $cat;
     }
-
-    public function find(CatName $name): array {
-        return $this->repository->findByName($name);
+    public function findAll():array{
+        return $this->repository->list();
     }
-
 }

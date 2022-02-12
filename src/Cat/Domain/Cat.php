@@ -44,10 +44,10 @@ class Cat extends AggregateRoot {
     public function description(): string {
         return $this->description->value();
     }
-    public function latitude(): string {
+    public function latitude(): float {
         return $this->latitude->value();
     }
-    public function longitude(): string {
+    public function longitude(): float {
         return $this->longitude->value();
     }
     public function rename(CatName $name): void{
@@ -77,7 +77,11 @@ class Cat extends AggregateRoot {
     public function toPrimitive(): array {
         return [
             'id' => $this->id() ?? null,
-            'name' => $this->name()
+            'name' => $this->name(),
+            'breedId' => $this->breed(),
+            'description' => $this->description(),
+            'longitude' => $this->longitude(),
+            'latitude' => $this->latitude()
         ];
     }
 

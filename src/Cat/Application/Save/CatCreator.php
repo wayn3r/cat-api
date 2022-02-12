@@ -2,6 +2,7 @@
 
 namespace CatApp\Cat\Application\Save;
 
+use CatApp\Breed\Application\Find\BreedFinder;
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatDescription;
 use CatApp\Cat\Domain\CatLatitude;

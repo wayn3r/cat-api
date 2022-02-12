@@ -2,7 +2,7 @@
 
 namespace CatApp\Cat\Application\Find;
 
-use CatApp\Cat\Domain\CatName;
+use CatApp\Cat\Domain\CatId;
 
 class FindCatQueryHandler {
     private CatFinder $finder;
@@ -11,8 +11,11 @@ class FindCatQueryHandler {
         $this->finder = $finder;
     }
 
-    public function __invoke(FindCatQuery $query): array {
-        $name = new CatName($query->name());
-        return $this->finder->find($name);
+    public function __invoke(FindCatQuery $query):array {
+        if($query->id() === $query::EMPTY_ID){
+            return $this->finder->findAll();
+        }
+        $id = new CatId($query->id());
+        return [$this->finder->findById($id)];
     }
 }

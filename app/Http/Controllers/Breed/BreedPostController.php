@@ -7,27 +7,19 @@ use CatApp\Breed\Application\Save\CreateBreedCommand;
 use CatApp\Breed\Application\Save\CreateBreedCommandHandler;
 use CatApp\Breed\Infrastructure\MySqlBreedRepository;
 use App\Http\Controllers\Controller;
-use CatApp\Breed\Domain\Breed;
+use App\Http\Requests\Breed\PostRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 class BreedPostController extends Controller {
 
-   
-    private function save(string $name): Breed {
+
+    public function __invoke(PostRequest $request): JsonResponse {
+
+        $command = new CreateBreedCommand($request->name);
         $repository = new MySqlBreedRepository();
         $creator = new BreedCreator($repository);
         $handler = new CreateBreedCommandHandler($creator);
 
-        $command = new CreateBreedCommand($name);
-        return $handler->__invoke($command);
-    }
-
-    public function __invoke(Request $request): JsonResponse {
-        if(empty($request->name)) {
-            return new JsonResponse(['error' => 'Name is required'], 400);
-        }
-        
-        $breed = $this->save($request->name);
+        $breed = $handler->__invoke($command);
         return new JsonResponse($breed);
     }
 

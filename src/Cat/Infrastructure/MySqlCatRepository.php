@@ -33,17 +33,16 @@ class MySqlCatRepository implements CatRepository {
 
     public function findById(CatId $id): ?Cat {
         $model = ModelsCat::find($id->value());
+        if($model === null){
+            return null;
+        }
         return Cat::fromPrimitive($model->toArray());
     }
     
-    public function findByName(CatName $name): array {
-        $catName = $name->value();
-        $cats = ModelsCat::where('name','like',"%$catName%")
-            ->limit(100)
-            ->get()
-            ->map(
-                fn(ModelsCat $cat) => Cat::fromPrimitive($cat->toArray())
-            );
+    public function list(): array {
+        $cats = ModelsCat::all()->map(
+            fn(ModelsCat $cat) => Cat::fromPrimitive($cat->toArray())
+        );
         return $cats->toArray();
     }
 }

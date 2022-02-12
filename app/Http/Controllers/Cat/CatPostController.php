@@ -7,11 +7,11 @@ use CatApp\Cat\Application\Save\CreateCatCommand;
 use CatApp\Cat\Application\Save\CreateCatCommandHandler;
 use CatApp\Cat\Infrastructure\MySqlCatRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cat\PostRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 class CatPostController extends Controller {
 
-    public function __invoke(Request $request): JsonResponse {
+    public function __invoke(PostRequest $request): JsonResponse {
         $repository = new MySqlCatRepository();
         $creator = new CatCreator($repository);
         $handler = new CreateCatCommandHandler($creator);
