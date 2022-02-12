@@ -2,7 +2,7 @@
 
 namespace CatApp\Breed\Infrastructure;
 
-use App\Models\Breed as ModelsBreed;
+use App\Models\Breed as BreedModel;
 use CatApp\Breed\Domain\Breed;
 use CatApp\Breed\Domain\BreedName;
 use CatApp\Breed\Domain\BreedRepository;
@@ -11,7 +11,7 @@ use CatApp\Shared\Domain\BreedId;
 class MySqlBreedRepository implements BreedRepository {
 
     public function record(Breed $breed): Breed {
-        $model = new ModelsBreed;
+        $model = new BreedModel;
         if($breed->id()){
             $model->id = $breed->id();
             $model->exists = true;
@@ -22,13 +22,13 @@ class MySqlBreedRepository implements BreedRepository {
     }
 
     public function remove(Breed $breed): Breed {
-        $model = ModelsBreed::find($breed->id());
+        $model = BreedModel::find($breed->id());
         $model->delete();
         return Breed::fromPrimitive($model->toArray());
     }
 
     public function findById(BreedId $id): ?Breed {
-        $model = ModelsBreed::find($id->value());
+        $model = BreedModel::find($id->value());
 
         if($model === null){
             return null;
@@ -39,11 +39,11 @@ class MySqlBreedRepository implements BreedRepository {
     
     public function findByName(BreedName $name): array {
         $breedName = $name->value();
-        $breeds = ModelsBreed::where('name','like',"%$breedName%")
+        $breeds = BreedModel::where('name','like',"%$breedName%")
             ->limit(100)
             ->get()
             ->map(
-                fn(ModelsBreed $breed) => Breed::fromPrimitive($breed->toArray())
+                fn(BreedModel $breed) => Breed::fromPrimitive($breed->toArray())
             );
         return $breeds->toArray();
     }
