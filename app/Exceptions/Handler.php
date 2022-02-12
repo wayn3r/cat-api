@@ -2,8 +2,9 @@
 
 namespace App\Exceptions;
 
-use CatApp\Breed\Domain\BreedNotExist;
 use CatApp\Cat\Domain\CatNotExist;
+use CatApp\Shared\Domain\BreedInUse;
+use CatApp\Shared\Domain\BreedNotExist;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
 use Throwable;
@@ -37,22 +38,12 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (BreedNotExist $e) {
-            return new JsonResponse(['error' => $e->getMessage()], 404);
-        });
+        $this->renderable(fn (BreedNotExist $e) => $this->response($e, 404));
+        $this->renderable(fn (CatNotExist $e) => $this->response($e, 404));
+        $this->renderable(fn (BreedInUse $e) => $this->response($e, 400));
     }
 
-    public function render($request, Throwable $e){
-        $exceptiions = [
-            BreedNotExist::class => 404,
-            CatNotExist::class => 404
-        ];
-        $status = @$exceptiions[get_class($e)];
-
-        if($status === null){
-            return parent::render($request, $e);
-        }
-        
-        return new JsonResponse(['error' => $e->getMessage()], $status);
+    private function response(Throwable $e, int $httpCode): JsonResponse {
+        return new JsonResponse(['message' => $e->getMessage()], $httpCode);
     }
 }

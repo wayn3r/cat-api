@@ -2,13 +2,14 @@
 
 namespace CatApp\Cat\Infrastructure;
 
-use App\Models\Breed;
 use App\Models\Cat as CatModel;
-use CatApp\Breed\Domain\BreedNotExist;
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatId;
 use CatApp\Cat\Domain\CatRepository;
 use CatApp\Shared\Domain\BreedId;
+use CatApp\Shared\Domain\BreedNotExist;
+use Illuminate\Database\QueryException;
+use Throwable;
 
 class MySqlCatRepository implements CatRepository {
 
@@ -19,17 +20,19 @@ class MySqlCatRepository implements CatRepository {
             $model->exists = true;
         }
 
-        if(!Breed::find($cat->breedId())){
-            throw new BreedNotExist(new BreedId($cat->breedId()));
-        }
-
         $model->breedId = $cat->breedId();
-
         $model->name = $cat->name();
         $model->description = $cat->description();
         $model->longitude = $cat->longitude();
         $model->latitude = $cat->latitude();
-        $model->save();
+
+        try{
+            $model->save();
+        }catch(QueryException $e){
+            if(in_array(BreedNotExist::ERROR_CODE, $e->errorInfo)){
+                throw new BreedNotExist(new BreedId($cat->breedId()));
+            }
+        }
         return Cat::fromPrimitive($model->toArray());
     }
 

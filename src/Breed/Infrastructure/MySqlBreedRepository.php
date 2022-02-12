@@ -7,6 +7,8 @@ use CatApp\Breed\Domain\Breed;
 use CatApp\Breed\Domain\BreedName;
 use CatApp\Breed\Domain\BreedRepository;
 use CatApp\Shared\Domain\BreedId;
+use CatApp\Shared\Domain\BreedInUse;
+use Illuminate\Database\QueryException;
 
 class MySqlBreedRepository implements BreedRepository {
 
@@ -23,7 +25,13 @@ class MySqlBreedRepository implements BreedRepository {
 
     public function remove(Breed $breed): Breed {
         $model = BreedModel::find($breed->id());
-        $model->delete();
+        try{
+            $model->delete();
+        }catch(QueryException $e){
+            if(in_array(BreedInUse::ERROR_CODE, $e->errorInfo)){
+                throw new BreedInUse(new BreedId($breed->id()));
+            }
+        }
         return Breed::fromPrimitive($model->toArray());
     }
 
