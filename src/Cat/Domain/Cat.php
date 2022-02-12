@@ -38,7 +38,7 @@ class Cat extends AggregateRoot {
     public function name(): string {
         return $this->name->value();
     }
-    public function breed(): int {
+    public function breedId(): int {
         return $this->breedId->value();
     }
     public function description(): string {
@@ -78,7 +78,7 @@ class Cat extends AggregateRoot {
         return [
             'id' => $this->id() ?? null,
             'name' => $this->name(),
-            'breedId' => $this->breed(),
+            'breedId' => $this->breedId(),
             'description' => $this->description(),
             'longitude' => $this->longitude(),
             'latitude' => $this->latitude()

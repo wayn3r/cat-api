@@ -2,22 +2,30 @@
 
 namespace CatApp\Cat\Infrastructure;
 
-use App\Models\Cat as ModelsCat;
+use App\Models\Breed;
+use App\Models\Cat as CatModel;
+use CatApp\Breed\Domain\BreedNotExist;
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatId;
-use CatApp\Cat\Domain\CatName;
 use CatApp\Cat\Domain\CatRepository;
+use CatApp\Shared\Domain\BreedId;
 
 class MySqlCatRepository implements CatRepository {
 
     public function record(Cat $cat): Cat {
-        $model = new ModelsCat;
+        $model = new CatModel;
         if($cat->id()){
             $model->id = $cat->id();
             $model->exists = true;
         }
+
+        if(!Breed::find($cat->breedId())){
+            throw new BreedNotExist(new BreedId($cat->breedId()));
+        }
+
+        $model->breedId = $cat->breedId();
+
         $model->name = $cat->name();
-        $model->breedId = $cat->breed();
         $model->description = $cat->description();
         $model->longitude = $cat->longitude();
         $model->latitude = $cat->latitude();
@@ -26,13 +34,13 @@ class MySqlCatRepository implements CatRepository {
     }
 
     public function remove(Cat $cat): Cat {
-        $model = ModelsCat::find($cat->id());
+        $model = CatModel::find($cat->id());
         $model->delete();
         return Cat::fromPrimitive($model->toArray());
     }
 
     public function findById(CatId $id): ?Cat {
-        $model = ModelsCat::find($id->value());
+        $model = CatModel::find($id->value());
         if($model === null){
             return null;
         }
@@ -40,8 +48,8 @@ class MySqlCatRepository implements CatRepository {
     }
     
     public function list(): array {
-        $cats = ModelsCat::all()->map(
-            fn(ModelsCat $cat) => Cat::fromPrimitive($cat->toArray())
+        $cats = CatModel::all()->map(
+            fn(CatModel $cat) => Cat::fromPrimitive($cat->toArray())
         );
         return $cats->toArray();
     }
