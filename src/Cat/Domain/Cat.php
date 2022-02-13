@@ -2,6 +2,7 @@
 
 namespace CatApp\Cat\Domain;
 
+use CatApp\Breed\Domain\Breed;
 use CatApp\Shared\Domain\AggregateRoot;
 use CatApp\Shared\Domain\BreedId;
 
@@ -9,6 +10,7 @@ class Cat extends AggregateRoot {
     private ?CatId $id;
     private CatName $name;
     private BreedId $breedId;
+    private ?Breed $breed;
     private CatDescription $description;
     private CatLongitude $longitude;
     private CatLatitude $latitude;
@@ -27,6 +29,7 @@ class Cat extends AggregateRoot {
         $this->description = $description;
         $this->longitude = $longitude;
         $this->latitude = $latitude;
+        $this->breed = null;
     }
 
     public function id(): ?int {
@@ -63,6 +66,9 @@ class Cat extends AggregateRoot {
         $this->latitude = $latitude;
         $this->longitude = $longitude;
     }
+    public function setBreed(Breed $breed){
+        $this->breed = $breed;
+    }
     
     public static function fromPrimitive(array $data): Cat {
         return new Cat(
@@ -81,7 +87,8 @@ class Cat extends AggregateRoot {
             'breedId' => $this->breedId(),
             'description' => $this->description(),
             'longitude' => $this->longitude(),
-            'latitude' => $this->latitude()
+            'latitude' => $this->latitude(),
+            'breed' => !$this->breed ? null : $this->breed->toPrimitive()
         ];
     }
 

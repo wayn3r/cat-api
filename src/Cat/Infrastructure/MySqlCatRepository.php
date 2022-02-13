@@ -2,6 +2,8 @@
 
 namespace CatApp\Cat\Infrastructure;
 
+use CatApp\Breed\Domain\Breed;
+use CatApp\Breed\Infrastructure\EloquentBreedModel;
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatId;
 use CatApp\Cat\Domain\CatRepository;
@@ -42,16 +44,26 @@ class MySqlCatRepository implements CatRepository {
 
     public function findById(CatId $id): ?Cat {
         $model = EloquentCatModel::find($id->value());
+        
         if($model === null){
             return null;
         }
-        return Cat::fromPrimitive($model->toArray());
+        [$breed] = $model->breed()->get()->toArray();
+        
+        $cat = Cat::fromPrimitive($model->toArray());
+        $cat->setBreed(Breed::fromPrimitive($breed));
+        return $cat;
     }
     
     public function list(): array {
         $cats = EloquentCatModel::all()->map(
-            fn(EloquentCatModel $cat) => Cat::fromPrimitive($cat->toArray())
-        );
+            function(EloquentCatModel $model) {
+                [$breed] = $model->breed()->get()->toArray();
+        
+                $cat = Cat::fromPrimitive($model->toArray());
+                $cat->setBreed(Breed::fromPrimitive($breed));
+                return $cat;
+            });
         return $cats->toArray();
     }
 }
