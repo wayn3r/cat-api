@@ -5,7 +5,7 @@ namespace CatApp\Breed\Application\Find;
 use CatApp\Breed\Domain\Breed;
 use CatApp\Shared\Domain\BreedId;
 use CatApp\Breed\Domain\BreedName;
-use CatApp\Breed\Domain\BreedNotExist;
+use CatApp\Shared\Domain\BreedNotExist;
 use CatApp\Breed\Domain\BreedRepository;
 
 class BreedFinder {
