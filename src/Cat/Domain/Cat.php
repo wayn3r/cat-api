@@ -59,7 +59,7 @@ class Cat extends AggregateRoot {
     public function changeBreed(BreedId $breedId): void{
         $this->breedId = $breedId;
     }
-    public function changeLocation(CatLatitude $latitude, CatLongitude $longitude): void{
+    public function changeLocation( CatLongitude $longitude, CatLatitude $latitude): void{
         $this->latitude = $latitude;
         $this->longitude = $longitude;
     }

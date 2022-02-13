@@ -14,7 +14,14 @@ class CatPutController extends Controller{
 
     public function __invoke(PutRequest $request): JsonResponse {
 
-        $command = new UpdateCatCommand($request->id, $request->name);
+        $command = new UpdateCatCommand(
+            $request->id, 
+            $request->name,
+            $request->breedId,
+            $request->description,
+            $request->longitude,
+            $request->latitude
+        );
         $repository = new MySqlCatRepository();
         $updater = new CatUpdater($repository);
         $handler = new UpdateCatCommandHandler($updater);
