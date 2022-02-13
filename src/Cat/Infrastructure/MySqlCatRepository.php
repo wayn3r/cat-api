@@ -2,19 +2,17 @@
 
 namespace CatApp\Cat\Infrastructure;
 
-use App\Models\Cat as CatModel;
 use CatApp\Cat\Domain\Cat;
 use CatApp\Cat\Domain\CatId;
 use CatApp\Cat\Domain\CatRepository;
 use CatApp\Shared\Domain\BreedId;
 use CatApp\Shared\Domain\BreedNotExist;
 use Illuminate\Database\QueryException;
-use Throwable;
 
 class MySqlCatRepository implements CatRepository {
 
     public function record(Cat $cat): Cat {
-        $model = new CatModel;
+        $model = new EloquentCatModel;
         if($cat->id()){
             $model->id = $cat->id();
             $model->exists = true;
@@ -37,13 +35,13 @@ class MySqlCatRepository implements CatRepository {
     }
 
     public function remove(Cat $cat): Cat {
-        $model = CatModel::find($cat->id());
+        $model = EloquentCatModel::find($cat->id());
         $model->delete();
         return Cat::fromPrimitive($model->toArray());
     }
 
     public function findById(CatId $id): ?Cat {
-        $model = CatModel::find($id->value());
+        $model = EloquentCatModel::find($id->value());
         if($model === null){
             return null;
         }
@@ -51,8 +49,8 @@ class MySqlCatRepository implements CatRepository {
     }
     
     public function list(): array {
-        $cats = CatModel::all()->map(
-            fn(CatModel $cat) => Cat::fromPrimitive($cat->toArray())
+        $cats = EloquentCatModel::all()->map(
+            fn(EloquentCatModel $cat) => Cat::fromPrimitive($cat->toArray())
         );
         return $cats->toArray();
     }
