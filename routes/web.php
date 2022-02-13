@@ -22,7 +22,6 @@ Route::get('/', function () {
                     'Create' => 'POST /api/breed',
                     'List all' => 'GET /api/breed',
                     'Search by name' => 'GET /api/breed?q=test',
-                    'Update' => 'PUT /api/breed',
                     'Delete' => 'DELETE /api/breed',
                 ],
                 'cat' => [

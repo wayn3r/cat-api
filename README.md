@@ -23,5 +23,4 @@
 -   **[Create a breed]** POST /api/breed
 -   **[List all breeds]** GET /api/breed
 -   **[Find breeds by name]** GET /api/breed?q=
--   **[Update a breed]** PUT /api/breed
 -   **[Delete a breed]** DELETE /api/breed
